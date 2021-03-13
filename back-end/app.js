@@ -2,6 +2,8 @@ const express = require('express');
 const cors = require('cors');
 require('dotenv').config();
 
+const questionsRouter = require('./routes/questions');
+
 const app = express();
 
 const corsOptions = {
@@ -14,9 +16,7 @@ app.use(express.json());
 // CORS Pre-Flight
 app.options('*', cors(corsOptions));
 
-app.get('/questions', (req, res) => {
-    res.json({ question: 1, string: 'test' });
-});
+app.use(questionsRouter);
 
 app.listen(process.env.PORT, () => {
     console.log(`Listening on port ${process.env.PORT}`);
