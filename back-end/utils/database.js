@@ -1,7 +1,8 @@
-const mysql = require('mysql');
-require('dotenv').config();
+import mysql from 'mysql';
+import dotenv from 'dotenv';
+dotenv.config();
 
-class Database {
+export class Database {
     constructor() {
         this.config = {
             host: process.env.SQL_HOST,
@@ -12,16 +13,16 @@ class Database {
         this.db = null;
     }
 
-    createConnection() {
+    create() {
         this.db = mysql.createConnection(this.config);
     }
 
-    endConnection() {
+    end() {
         this.db.end();
     }
 
     sendQuery(query) {
-        this.createConnection();
+        this.create();
         return new Promise((resolve, reject) => {
             this.db.query(query, (err, result) => {
                 if (err || !result) {
@@ -30,9 +31,7 @@ class Database {
                     resolve(result);
                 }
             });
-            this.endConnection();
+            this.end();
         });
     }
 }
-
-module.exports = Database;

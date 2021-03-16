@@ -1,8 +1,10 @@
-const express = require('express');
-const cors = require('cors');
-require('dotenv').config();
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
 
-const questionsRouter = require('./routes/questions');
+import questionsRouter from './routes/question-router.js';
+
+dotenv.config();
 
 const app = express();
 
@@ -16,8 +18,11 @@ app.use(express.json());
 // CORS Pre-Flight
 app.options('*', cors(corsOptions));
 
+// Setup routing
 app.use(questionsRouter);
 
 app.listen(process.env.PORT, () => {
     console.log(`Listening on port ${process.env.PORT}`);
 });
+
+export default app;
