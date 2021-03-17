@@ -2,14 +2,13 @@ CREATE DATABASE comp_351_project;
 
 CREATE TABLE `question` (
     `question_id` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    `text` VARCHAR( 255 ) NOT NULL UNIQUE KEY
+    `text` VARCHAR( 255 ) NOT NULL
 );
 
 CREATE TABLE `choice` (
     `choice_id` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `question_id` INT( 11 ) NOT NULL,
-    `text` VARCHAR( 255 ) NOT NULL UNIQUE KEY,
-    `index` INT( 11 ) NOT NULL,
+    `text` VARCHAR( 255 ) NOT NULL,
     CONSTRAINT fk_question FOREIGN KEY ( question_id ) REFERENCES question(question_id)
 );
 
