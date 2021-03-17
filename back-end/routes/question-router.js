@@ -13,9 +13,7 @@ router.get('/questions', (req, res) => {
 
 // Creates new question
 router.post('/question', (req, res) => {
-    console.log(req.body);
-
-    dbUtils.addQuestion(req.body).then((data) => {
+    dbUtils.createQuestion(req.body).then((data) => {
         res.json(data);
     });
 });

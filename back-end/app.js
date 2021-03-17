@@ -16,7 +16,7 @@ const corsOptions = {
 app.use(express.json());
 
 // CORS Pre-Flight
-app.options('*', cors(corsOptions));
+app.use(cors(corsOptions));
 
 // Setup routing
 app.use(questionsRouter);

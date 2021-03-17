@@ -6,69 +6,109 @@ export class DatabaseUtils {
     }
 
     async getQuestions() {
-        const data = await this.db.sendQuery(
-            `SELECT q.question_id, q.text AS question_text, c.choice_id, c.text AS choice_text, a.choice_id AS answer_choice_id FROM question q NATURAL JOIN answer a JOIN choice c ON q.question_id = c.question_id`
+        const questionsQuery = await this.db.sendQuery(
+            `SELECT * FROM question`
         );
+
+        const data = [];
+
+        for (const questionQuery of questionsQuery) {
+            const choicesQuery = await this.db.sendQuery(
+                `SELECT * FROM choice WHERE question_id = ${questionQuery.question_id}`
+            );
+
+            const answerQuery = await this.db.sendQuery(
+                `SELECT * FROM answer WHERE question_id = ${questionQuery.question_id} LIMIT 1`
+            );
+
+            data.push({
+                question: questionQuery,
+                choices: choicesQuery,
+                answer: answerQuery[0],
+            });
+        }
+
         return data;
     }
 
-    async addQuestion(data) {
-        const questionID = await this.db.sendQuery(
-            `INSERT INTO question (text) VALUES (${data.question.text})`
-        ).insertId;
+    async createQuestion(data) {
+        const questionQuery = await this.db.sendQuery(
+            `INSERT INTO question (text) VALUES ("${data.question.text}")`
+        );
 
-        const choiceIDs = [];
-        for (let i = 0; i < data.choices; i++) {
-            choiceIDs.push(
-                await this.db.sendQuery(
-                    `INSERT INTO choice (question_id, text, \`index\`) VALUES (${questionID}, ${data.answer.text}, ${i})`
-                ).insertId
+        const questionID = questionQuery.insertId;
+
+        const choiceIDs = new Map();
+        for (let i = 0; i < data.choices.length; i++) {
+            const choiceQuery = await this.db.sendQuery(
+                `INSERT INTO choice (question_id, text) VALUES ("${questionID}", "${data.choices[i].text}")`
             );
+            choiceIDs.set(data.choices[i].choice_id, choiceQuery.insertId);
         }
 
-        const answerID = await this.db.sendQuery(
-            `INSERT INTO answer (question_id, choice_id) VALUES (${questionID}, ${
-                choiceIDs[data.answer]
-            })`
-        ).insertId;
+        const answerQuery = await this.db.sendQuery(
+            `INSERT INTO answer (question_id, choice_id) VALUES ("${questionID}", "${choiceIDs.get(
+                data.answer.choice_id
+            )}")`
+        );
+        const answerID = answerQuery.insertId;
 
-        const ids = {
-            questionID,
-            choiceIDs,
-            answerID,
+        const newQuestion = {
+            question: {
+                question_id: questionID,
+                text: data.question.text,
+            },
+            choices: [],
+            answer: {
+                answer_id: answerID,
+                question_id: questionID,
+                choice_id: choiceIDs.get(data.answer.choice_id),
+            },
         };
 
-        return ids;
+        for (let i = 0; i < data.choices.length; i++) {
+            newQuestion.choices.push({
+                question_id: questionID,
+                choice_id: choiceIDs.get(data.choices[i].choice_id),
+                text: data.choices[i].text,
+            });
+        }
+
+        return newQuestion;
     }
 
     async updateQuestion(data) {
         await this.db.sendQuery(
-            `UPDATE question SET text = ${data.question.text} WHERE question_id = ${data.question.questionID}`
+            `UPDATE question SET text = "${data.question.text}" WHERE question_id = "${data.question.question_id}"`
         );
 
-        for (let i = 0; i < data.question.choices; i++) {
-            const choice = data.question.choices[i];
+        for (let i = 0; i < data.choices.length; i++) {
+            const choice = data.choices[i];
             await this.db.sendQuery(
-                `UPDATE choice SET text = ${choice.text} WHERE question_id = ${data.question.questionID}`
+                `UPDATE choice SET text = "${choice.text}" WHERE choice_id = "${choice.choice_id}"`
             );
         }
 
         await this.db.sendQuery(
-            `UPDATE answer SET choice_id = ${data.question.answer.choiceID} WHERE question_id = ${data.question.questionID}`
+            `UPDATE answer SET choice_id = "${data.answer.choice_id}" WHERE question_id = "${data.question.question_id}"`
         );
+
+        return {success: 1};
     }
 
     async deleteQuestion(data) {
         await this.db.sendQuery(
-            `DELETE FROM answer WHERE question_id = ${data.question.questionID}`
+            `DELETE FROM answer WHERE question_id = "${data.question.question_id}"`
         );
 
         await this.db.sendQuery(
-            `DELETE FROM choice WHERE question_id = ${data.question.questionID}`
+            `DELETE FROM choice WHERE question_id = "${data.question.question_id}"`
         );
 
         await this.db.sendQuery(
-            `DELETE FROM question WHERE question_id = ${data.question.questionID}`
+            `DELETE FROM question WHERE question_id = "${data.question.question_id}"`
         );
+
+        return {success: 1};
     }
 }

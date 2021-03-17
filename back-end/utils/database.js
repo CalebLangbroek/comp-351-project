@@ -26,7 +26,7 @@ export class Database {
         return new Promise((resolve, reject) => {
             this.db.query(query, (err, result) => {
                 if (err || !result) {
-                    resolve({ error: 'An error occurred' });
+                    reject(err);
                 } else {
                     resolve(result);
                 }
