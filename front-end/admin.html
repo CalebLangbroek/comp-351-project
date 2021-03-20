@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link href="css/styles.css" rel="stylesheet" />
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+            crossorigin="anonymous"
+        />
+        <title>Admin Page</title>
+    </head>
+
+    <body>
+        <div class="container pt-5">
+            <div class="row">
+                <div class="col text-center">
+                    <h1>Admin</h1>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col">
+                    <a
+                        type="button"
+                        class="btn btn-primary"
+                        href="./index.html"
+                    >
+                        Back to Home
+                    </a>
+                </div>
+            </div>
+            <div id="question-new">
+                <div class="row mb-3">
+                    <div class="col">
+                        <h3>New Question</h3>
+                    </div>
+                </div>
+                <div
+                    id="alert-empty-fields-new"
+                    class="alert alert-danger"
+                    role="alert"
+                    hidden
+                >
+                    All fields must be filled out!
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <textarea
+                            class="form-control"
+                            id="question-text-new"
+                        ></textarea>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col">
+                        <h3>New Question Choices</h3>
+                    </div>
+                </div>
+                <div id="choices">
+                    <div class="row mb-3" id="choice-new-0">
+                        <div class="col-1">
+                            <input
+                                type="radio"
+                                name="choices-new"
+                                data-choice-id="0"
+                                class="form-check-input"
+                                checked
+                            />
+                        </div>
+                        <div class="col">
+                            <input
+                                type="text"
+                                data-question-choice="new"
+                                data-choice-id="0"
+                                class="form-control"
+                            />
+                        </div>
+                        <div class="col-1">
+                            <button
+                                type="button"
+                                id="delete-option-new-0"
+                                class="btn btn-danger"
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row mb-3" id="choice-new-1">
+                        <div class="col-1">
+                            <input
+                                type="radio"
+                                name="choices-new"
+                                data-choice-id="1"
+                                class="form-check-input"
+                            />
+                        </div>
+                        <div class="col">
+                            <input
+                                type="text"
+                                data-question-choice="new"
+                                data-choice-id="1"
+                                class="form-control"
+                            />
+                        </div>
+                        <div class="col-1">
+                            <button
+                                type="button"
+                                id="delete-option-new-1"
+                                class="btn btn-danger"
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row mb-3" id="choice-new-2">
+                        <div class="col-1">
+                            <input
+                                type="radio"
+                                name="choices-new"
+                                data-choice-id="2"
+                                class="form-check-input"
+                            />
+                        </div>
+                        <div class="col">
+                            <input
+                                type="text"
+                                data-question-choice="new"
+                                data-choice-id="2"
+                                class="form-control"
+                            />
+                        </div>
+                        <div class="col-1">
+                            <button
+                                type="button"
+                                id="delete-option-new-2"
+                                class="btn btn-danger"
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row mb-3" id="choice-new-3">
+                        <div class="col-1">
+                            <input
+                                type="radio"
+                                name="choices-new"
+                                data-choice-id="3"
+                                class="form-check-input"
+                            />
+                        </div>
+                        <div class="col">
+                            <input
+                                type="text"
+                                data-question-choice="new"
+                                data-choice-id="3"
+                                class="form-control"
+                            />
+                        </div>
+                        <div class="col-1">
+                            <button
+                                type="button"
+                                id="delete-option-new-3"
+                                class="btn btn-danger"
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col d-flex justify-content-between">
+                        <button
+                            type="button"
+                            id="add-question"
+                            class="btn btn-success"
+                        >
+                            Add Question
+                        </button>
+                        <button
+                            type="button"
+                            id="add-choice"
+                            class="btn btn-success"
+                        >
+                            Add Choice
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container py-2" id="questions"></div>
+        <script type="module" src="./js/admin.js"></script>
+    </body>
+</html>
