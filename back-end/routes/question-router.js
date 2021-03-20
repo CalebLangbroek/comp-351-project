@@ -1,12 +1,12 @@
-import express from 'express';
-import { DatabaseUtils } from '../utils/database-utils.js';
+const express = require('express');
+const DatabaseUtils = require('../utils/database-utils.js');
 
 const router = express.Router();
 const dbUtils = new DatabaseUtils();
 
 // Gets all questions
 router.get('/questions', (req, res) => {
-    dbUtils.getQuestions().then(data => {
+    dbUtils.getQuestions().then((data) => {
         res.json(data);
     });
 });
@@ -32,4 +32,4 @@ router.delete('/question', (req, res) => {
     });
 });
 
-export default router;
+module.exports = router;

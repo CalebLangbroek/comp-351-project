@@ -1,8 +1,7 @@
-import mysql from 'mysql';
-import dotenv from 'dotenv';
-dotenv.config();
+const mysql = require('mysql');
+require('dotenv').config();
 
-export class Database {
+class Database {
     constructor() {
         this.config = {
             host: process.env.SQL_HOST,
@@ -35,3 +34,5 @@ export class Database {
         });
     }
 }
+
+module.exports = Database;

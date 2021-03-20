@@ -1,6 +1,6 @@
-import { Database } from './database.js';
+const Database = require('./database.js');
 
-export class DatabaseUtils {
+class DatabaseUtils {
     constructor() {
         this.db = new Database();
     }
@@ -93,7 +93,7 @@ export class DatabaseUtils {
             `UPDATE answer SET choice_id = "${data.answer.choice_id}" WHERE question_id = "${data.question.question_id}"`
         );
 
-        return {success: 1};
+        return { success: 1 };
     }
 
     async deleteQuestion(data) {
@@ -109,6 +109,8 @@ export class DatabaseUtils {
             `DELETE FROM question WHERE question_id = "${data.question.question_id}"`
         );
 
-        return {success: 1};
+        return { success: 1 };
     }
 }
+
+module.exports = DatabaseUtils;

@@ -1,10 +1,8 @@
-import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
+const express = require('express');
+const cors = require('cors');
+require('dotenv').config();
 
-import questionsRouter from './routes/question-router.js';
-
-dotenv.config();
+const questionsRouter = require('./routes/question-router.js');
 
 const app = express();
 
@@ -24,5 +22,3 @@ app.use(questionsRouter);
 app.listen(process.env.PORT, () => {
     console.log(`Listening on port ${process.env.PORT}`);
 });
-
-export default app;
